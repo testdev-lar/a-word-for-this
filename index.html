@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Find the perfect word for your emotions">
+    <title>A Word for This</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main Container -->
+    <main class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <h1 class="masthead">A Word for This</h1>
+        </header>
+
+        <!-- Input Section -->
+        <section class="input-section" aria-label="Describe your emotion">
+            <form id="word-form" class="word-form">
+                <label for="emotion-input" class="input-label">What's on your mind?</label>
+                <textarea
+                    id="emotion-input"
+                    class="emotion-input"
+                    maxlength="200"
+                    placeholder="The feeling when..."
+                    aria-describedby="char-count"
+                    required
+                ></textarea>
+                <span id="char-count" class="char-count" aria-live="polite">0 / 200</span>
+                <button type="submit" class="submit-btn" id="submit-btn">Find the Word</button>
+            </form>
+        </section>
+
+        <!-- Loading State -->
+        <section id="loading-section" class="loading-section" aria-live="polite" hidden>
+            <p class="loading-text">Searching through languages...</p>
+        </section>
+
+        <!-- Result Section -->
+        <section id="result-section" class="result-section" aria-live="polite" hidden>
+            <article class="word-card">
+                <h2 id="result-word" class="result-word"></h2>
+                <p id="result-pronunciation" class="result-pronunciation"></p>
+                <p id="result-origin" class="result-origin"></p>
+                <p id="result-definition" class="result-definition"></p>
+            </article>
+            <div class="result-actions">
+                <button id="share-btn" class="action-btn">Save as Clipping</button>
+                <button id="share-x-btn" class="action-btn-x" aria-label="Share to X">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" class="x-logo">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                    </svg>
+                </button>
+                <button id="new-search-btn" class="action-btn">New Search</button>
+            </div>
+        </section>
+
+        <!-- Error Section -->
+        <section id="error-section" class="error-section" aria-live="assertive" hidden>
+            <p id="error-message" class="error-message"></p>
+            <button id="retry-btn" class="action-btn">Try Again</button>
+        </section>
+
+        <!-- Archive Section -->
+        <section id="archive-section" class="archive-section">
+            <button id="archive-toggle" class="archive-toggle">View Archive</button>
+            <div id="archive-list" class="archive-list" hidden>
+                <h2 class="archive-title">Your Collection</h2>
+                <ul id="archive-items" class="archive-items"></ul>
+                <button id="clear-archive" class="action-btn action-btn--danger" hidden>Clear Archive</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Tutorial Overlay -->
+    <div id="tutorial-overlay" class="tutorial-overlay" hidden>
+        <div class="tutorial-modal">
+            <div class="tutorial-content">
+                <div class="tutorial-card" data-step="1">
+                    <h2 class="tutorial-headline">Language knows what you feel</h2>
+                    <p class="tutorial-body">There are thousands of words across cultures that capture specific emotions. Many have no direct translation—but they exist, waiting to name what you're experiencing.</p>
+                </div>
+                <div class="tutorial-card" data-step="2" hidden>
+                    <h2 class="tutorial-headline">Describe, don't define</h2>
+                    <p class="tutorial-body">Write how something feels, not what it's called. The more specific, the more beautiful the word you'll discover.</p>
+                </div>
+                <div class="tutorial-card" data-step="3" hidden>
+                    <h2 class="tutorial-headline">Build your vocabulary of feeling</h2>
+                    <p class="tutorial-body">Every word you find is saved in your archive. Return to them, share them, let them become part of how you understand yourself.</p>
+                </div>
+            </div>
+            <div class="tutorial-nav">
+                <button id="tutorial-skip" class="tutorial-btn tutorial-btn--text">Skip</button>
+                <div class="tutorial-dots">
+                    <span class="tutorial-dot tutorial-dot--active"></span>
+                    <span class="tutorial-dot"></span>
+                    <span class="tutorial-dot"></span>
+                </div>
+                <button id="tutorial-next" class="tutorial-btn tutorial-btn--primary">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Button -->
+    <button id="help-btn" class="help-btn" aria-label="Show tutorial">?</button>
+
+    <!-- Hidden Canvas for Image Generation -->
+    <canvas id="share-canvas" class="share-canvas" aria-hidden="true"></canvas>
+
+    <script src="app.js"></script>
+</body>
+</html>
