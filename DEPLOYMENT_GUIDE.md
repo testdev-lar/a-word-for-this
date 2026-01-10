@@ -89,7 +89,7 @@ Netlify will assign you a random URL like `https://random-name-12345.netlify.app
 4. Click "Add a variable" → "Add a single variable"
 5. Fill in:
    - **Key:** `OPENROUTER_API_KEY`
-   - **Value:** `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`
+   - **Value:** `[Your new OpenRouter API key here]`
    - **Scopes:** Check all boxes (builds, functions, post-processing)
 6. Click "Create variable"
 
