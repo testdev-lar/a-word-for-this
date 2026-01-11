@@ -866,9 +866,179 @@ function init() {
     document.getElementById('tutorial-next').addEventListener('click', () => Tutorial.nextStep());
     document.getElementById('help-btn').addEventListener('click', () => Tutorial.show());
 
+    // Initialize donate feature
+    Donate.init();
+
     // Focus input on load
     UI.elements.input.focus();
 }
+
+// ============================================
+// DONATE MODULE
+// ============================================
+const Donate = {
+    elements: {
+        donateBtn: null,
+        donatePopover: null,
+        copyBtn: null,
+        copyFeedback: null,
+        walletAddress: null
+    },
+
+    /**
+     * Initialize donate feature
+     */
+    init() {
+        console.log('[Donate] Initializing donate feature...');
+
+        // Get DOM elements
+        this.elements.donateBtn = document.getElementById('donate-btn');
+        this.elements.donatePopover = document.getElementById('donate-popover');
+        this.elements.copyBtn = document.getElementById('copy-btn');
+        this.elements.copyFeedback = document.getElementById('copy-feedback');
+        this.elements.walletAddress = document.getElementById('wallet-address');
+
+        // Bind event listeners
+        this.elements.donateBtn.addEventListener('click', () => this.togglePopover());
+        this.elements.copyBtn.addEventListener('click', () => this.copyAddress());
+
+        // Close popover when clicking outside
+        document.addEventListener('click', (e) => this.handleOutsideClick(e));
+
+        // Keyboard accessibility
+        this.elements.donateBtn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.togglePopover();
+            }
+        });
+
+        console.log('[Donate] Initialization complete');
+    },
+
+    /**
+     * Toggle popover visibility
+     */
+    togglePopover() {
+        const isHidden = this.elements.donatePopover.hidden;
+
+        if (isHidden) {
+            console.log('[Donate] Opening popover');
+            this.elements.donatePopover.hidden = false;
+            this.elements.donateBtn.setAttribute('aria-expanded', 'true');
+        } else {
+            console.log('[Donate] Closing popover');
+            this.elements.donatePopover.hidden = true;
+            this.elements.donateBtn.setAttribute('aria-expanded', 'false');
+        }
+    },
+
+    /**
+     * Copy wallet address to clipboard
+     */
+    async copyAddress() {
+        const address = this.elements.walletAddress.textContent;
+        console.log('[Donate] Attempting to copy address:', address);
+
+        try {
+            // Try modern Clipboard API first
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                await navigator.clipboard.writeText(address);
+                console.log('[Donate] Address copied via Clipboard API');
+                this.showCopyFeedback();
+            } else {
+                // Fallback for older browsers or blocked clipboard
+                console.warn('[Donate] Clipboard API not available, using fallback');
+                this.copyAddressFallback(address);
+            }
+        } catch (error) {
+            console.error('[Donate] Copy failed:', error);
+            // Use fallback on error
+            this.copyAddressFallback(address);
+        }
+    },
+
+    /**
+     * Fallback copy method for older browsers
+     */
+    copyAddressFallback(address) {
+        console.log('[Donate] Using fallback copy method');
+
+        // Create temporary textarea
+        const textarea = document.createElement('textarea');
+        textarea.value = address;
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        textarea.setAttribute('readonly', '');
+        document.body.appendChild(textarea);
+
+        try {
+            // Select and copy
+            textarea.select();
+            textarea.setSelectionRange(0, address.length);
+            const successful = document.execCommand('copy');
+
+            if (successful) {
+                console.log('[Donate] Address copied via fallback method');
+                this.showCopyFeedback();
+            } else {
+                console.error('[Donate] Fallback copy failed');
+                this.showManualCopyPrompt(address);
+            }
+        } catch (error) {
+            console.error('[Donate] Fallback copy error:', error);
+            this.showManualCopyPrompt(address);
+        } finally {
+            document.body.removeChild(textarea);
+        }
+    },
+
+    /**
+     * Show manual copy prompt as last resort
+     */
+    showManualCopyPrompt(address) {
+        console.log('[Donate] Showing manual copy prompt');
+
+        // Use window.prompt as last resort
+        const userAction = window.prompt(
+            'Automatic copy failed. Please manually copy this address:',
+            address
+        );
+
+        if (userAction !== null) {
+            console.log('[Donate] User acknowledged manual copy prompt');
+        }
+    },
+
+    /**
+     * Show "Copied!" feedback message
+     */
+    showCopyFeedback() {
+        console.log('[Donate] Showing copy feedback');
+
+        // Show feedback
+        this.elements.copyFeedback.hidden = false;
+
+        // Hide after 2 seconds
+        setTimeout(() => {
+            this.elements.copyFeedback.hidden = true;
+            console.log('[Donate] Copy feedback hidden');
+        }, 2000);
+    },
+
+    /**
+     * Handle clicks outside popover to close it
+     */
+    handleOutsideClick(event) {
+        const isClickInside = this.elements.donateBtn.contains(event.target) ||
+                             this.elements.donatePopover.contains(event.target);
+
+        if (!isClickInside && !this.elements.donatePopover.hidden) {
+            console.log('[Donate] Outside click detected, closing popover');
+            this.togglePopover();
+        }
+    }
+};
 
 // Start application when DOM is ready
 document.addEventListener('DOMContentLoaded', init);

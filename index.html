@@ -112,6 +112,25 @@
     <!-- Help Button -->
     <button id="help-btn" class="help-btn" aria-label="Show tutorial">?</button>
 
+    <!-- Donate Button -->
+    <button id="donate-btn" class="donate-btn" aria-label="Donate via crypto" aria-expanded="false">
+        ☕
+    </button>
+
+    <!-- Donate Popover -->
+    <div id="donate-popover" class="donate-popover" role="tooltip" hidden>
+        <div class="donate-popover-content">
+            <p class="donate-label">Support this project</p>
+            <div class="donate-address-container">
+                <code id="wallet-address" class="wallet-address">0xYourWalletAddressHere</code>
+                <button id="copy-btn" class="copy-btn" aria-label="Copy wallet address">
+                    Copy
+                </button>
+            </div>
+            <span id="copy-feedback" class="copy-feedback" aria-live="polite" hidden>Copied!</span>
+        </div>
+    </div>
+
     <!-- Hidden Canvas for Image Generation -->
     <canvas id="share-canvas" class="share-canvas" aria-hidden="true"></canvas>
 
