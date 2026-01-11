@@ -121,8 +121,20 @@
     <div id="donate-popover" class="donate-popover" role="tooltip" hidden>
         <div class="donate-popover-content">
             <p class="donate-label">Support this project</p>
+
+            <!-- Network Toggle -->
+            <div class="network-toggle">
+                <button id="eth-toggle" class="network-btn network-btn--active" data-network="ethereum">
+                    Ethereum
+                </button>
+                <button id="sol-toggle" class="network-btn" data-network="solana">
+                    Solana
+                </button>
+            </div>
+
+            <!-- Wallet Address Display -->
             <div class="donate-address-container">
-                <code id="wallet-address" class="wallet-address">0xYourWalletAddressHere</code>
+                <code id="wallet-address" class="wallet-address">0xdf6ae818b038dd887210d8b1c214a98f03b3d40d</code>
                 <button id="copy-btn" class="copy-btn" aria-label="Copy wallet address">
                     Copy
                 </button>

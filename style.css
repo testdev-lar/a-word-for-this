@@ -804,6 +804,42 @@ body {
     margin: 0;
 }
 
+.network-toggle {
+    display: flex;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-xs);
+}
+
+.network-btn {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 6px 12px;
+    background: transparent;
+    color: var(--color-text-muted);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    flex: 1;
+}
+
+.network-btn:hover {
+    background: rgba(0, 0, 0, 0.03);
+    color: var(--color-text);
+}
+
+.network-btn--active {
+    background: var(--color-text);
+    color: var(--color-background);
+    border-color: var(--color-text);
+}
+
+.network-btn:focus {
+    outline: 2px solid var(--color-text);
+    outline-offset: 2px;
+}
+
 .donate-address-container {
     display: flex;
     gap: var(--space-xs);

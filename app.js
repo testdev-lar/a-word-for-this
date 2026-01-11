@@ -882,8 +882,18 @@ const Donate = {
         donatePopover: null,
         copyBtn: null,
         copyFeedback: null,
-        walletAddress: null
+        walletAddress: null,
+        ethToggle: null,
+        solToggle: null
     },
+
+    // Wallet addresses for different networks
+    wallets: {
+        ethereum: '0xdf6ae818b038dd887210d8b1c214a98f03b3d40d',
+        solana: 'CXwLLEfvNmCK9L7KMXYo4ByhsJ8JhMwUHfvTo2xKYP1z'
+    },
+
+    currentNetwork: 'ethereum',
 
     /**
      * Initialize donate feature
@@ -897,10 +907,14 @@ const Donate = {
         this.elements.copyBtn = document.getElementById('copy-btn');
         this.elements.copyFeedback = document.getElementById('copy-feedback');
         this.elements.walletAddress = document.getElementById('wallet-address');
+        this.elements.ethToggle = document.getElementById('eth-toggle');
+        this.elements.solToggle = document.getElementById('sol-toggle');
 
         // Bind event listeners
         this.elements.donateBtn.addEventListener('click', () => this.togglePopover());
         this.elements.copyBtn.addEventListener('click', () => this.copyAddress());
+        this.elements.ethToggle.addEventListener('click', () => this.switchNetwork('ethereum'));
+        this.elements.solToggle.addEventListener('click', () => this.switchNetwork('solana'));
 
         // Close popover when clicking outside
         document.addEventListener('click', (e) => this.handleOutsideClick(e));
@@ -914,6 +928,27 @@ const Donate = {
         });
 
         console.log('[Donate] Initialization complete');
+    },
+
+    /**
+     * Switch between Ethereum and Solana networks
+     */
+    switchNetwork(network) {
+        console.log(`[Donate] Switching to ${network} network`);
+
+        this.currentNetwork = network;
+
+        // Update wallet address display
+        this.elements.walletAddress.textContent = this.wallets[network];
+
+        // Update button states
+        if (network === 'ethereum') {
+            this.elements.ethToggle.classList.add('network-btn--active');
+            this.elements.solToggle.classList.remove('network-btn--active');
+        } else {
+            this.elements.solToggle.classList.add('network-btn--active');
+            this.elements.ethToggle.classList.remove('network-btn--active');
+        }
     },
 
     /**
