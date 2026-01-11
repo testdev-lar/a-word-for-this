@@ -711,26 +711,13 @@ const Handlers = {
     /**
      * Handle share to X button click
      */
-    async handleShareX() {
+    handleShareX() {
         if (!State.currentResult) return;
 
-        // Generate image for sharing
-        const canvas = UI.elements.canvas;
-        Share.generateImageForShare(State.currentResult);
+        const result = State.currentResult;
 
-        // Always download the image first
-        Share.downloadImage(canvas, State.currentResult.word);
-
-        // Try to copy image to clipboard
-        const copied = await Share.copyImageToClipboard(canvas);
-
-        // Prepare tweet text with instructions
-        const tweetText = copied
-            ? 'Image copied to clipboard! Just paste it into this post.\n\nPowered by A Word For This'
-            : 'Image downloaded! Please attach it to this post.\n\nPowered by A Word For This';
-
-        // Small delay to ensure download starts
-        await new Promise(resolve => setTimeout(resolve, 300));
+        // Create tweet text with word details
+        const tweetText = `${result.word} (${result.origin})\n${result.definition}\n\n#AWordForThis`;
 
         // Open X with pre-filled text
         const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
